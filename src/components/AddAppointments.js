@@ -1,42 +1,67 @@
 import React, { Component } from "react";
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus } from "react-icons/fa";
 
 class AddAppointments extends Component {
-
-  constructor(){
+  constructor() {
     super();
     this.state = {
-      petName: '',
-      ownerName: '',
-      aptDate: '',
-      aptTime: '',
-      aptNotes: ''
-    }
+      petName: "",
+      ownerName: "",
+      aptDate: "",
+      aptTime: "",
+      aptNotes: "",
+    };
     this.handleChange = this.handleChange.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
-  handleChange(e){
+  handleChange(e) {
     const target = e.target;
     const value = target.value;
     const name = target.name;
 
     this.setState({
-      [name]:value
+      [name]: value,
     });
+  }
+  handleAdd(e) {
+    e.preventDefault();
+    let tempApt = {
+      petName: this.state.petName,
+      ownerName: this.state.ownerName,
+      aptDate: this.state.aptDate + " " + this.state.aptTime,
+      aptNotes: this.state.aptNotes,
+    };
+
+    this.props.AddAppointments(tempApt);
+
+    this.setState = {
+      petName: "",
+      ownerName: "",
+      aptDate: "",
+      aptTime: "",
+      aptNotes: "",
+    };
+    this.props.toggleForm();
   }
 
   render() {
     return (
-      <div className={
-        "card textcenter mt-3 " + 
-        (this.props.formDisplay ? '': 'add-appointment')
-      }>
-        <div className="apt-addheading card-header bg-primary text-white" onClick={this.props.toggleForm}>
+      <div
+        className={
+          "card textcenter mt-3 " +
+          (this.props.formDisplay ? "" : "add-appointment")
+        }
+      >
+        <div
+          className="apt-addheading card-header bg-primary text-white"
+          onClick={this.props.toggleForm}
+        >
           <FaPlus /> Add Appointment
         </div>
 
         <div className="card-body">
-          <form id="aptForm" noValidate>
+          <form id="aptForm" noValidate onSubmit={this.handleAdd}>
             <div className="form-group form-row">
               <label
                 className="col-md-2 col-form-label text-md-right"
